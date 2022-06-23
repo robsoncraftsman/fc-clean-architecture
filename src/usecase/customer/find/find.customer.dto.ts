@@ -1,5 +1,5 @@
 export interface InputFindCustomerDTO {
-    id: string
+    id: string;
 }
 
 export interface OutputFindCustomerDTO {
