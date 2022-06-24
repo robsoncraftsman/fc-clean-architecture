@@ -1,6 +1,4 @@
-import ProductInterface from "./product.interface";
-
-export default class Product implements ProductInterface {
+export default class Product {
   private _id: string;
   private _name: string;
   private _price: number;
@@ -15,7 +13,7 @@ export default class Product implements ProductInterface {
   get id(): string {
     return this._id;
   }
-  
+
   get name(): string {
     return this._name;
   }
