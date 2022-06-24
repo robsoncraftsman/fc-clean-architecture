@@ -53,6 +53,6 @@ describe('Find Customer Use Case - Unit Test', () => {
         });
 
         const usecase = new FindCustomerUseCase(customerRepository);
-        expect(usecase.execute(input)).rejects.toThrowError("Customer not found");
+        await expect(usecase.execute(input)).rejects.toThrowError("Customer not found");
     });
 });
