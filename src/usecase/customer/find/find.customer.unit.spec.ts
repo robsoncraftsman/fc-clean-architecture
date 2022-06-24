@@ -42,7 +42,7 @@ describe('Find Customer Use Case - Unit Test', () => {
         expect(output).toEqual(expectedOutput);
     });
 
-    it('should throw an excpetion if a customer does not exist', async () => {
+    it('should throw an exception if a customer does not exist', async () => {
         const input = {
             id: "1"
         };
