@@ -43,7 +43,7 @@ describe('Create Customer Use Case - Unit Test', () => {
         expect(output).toEqual(expectedOutput);
     });
 
-    it('should create a customer', async () => {
+    it('should not create a customer with an empty name', async () => {
         const input: InputCreateCustomerDTO = {
             name: "",
             address: {
