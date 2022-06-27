@@ -1,17 +1,28 @@
-import ProductRepositoryInterface from "../../../domain/product/repository/product-repository.interface";
+import { Sequelize } from "sequelize-typescript";
+import ProductModel from "../../../infrastructure/product/repository/sequelize/product.model";
+import ProductRepository from "../../../infrastructure/product/repository/sequelize/product.repository";
 import { InputCreateProductDTO, OutputCreateProductDTO } from "./create.product.dto";
 import CreateProductUseCase from "./create.product.usecase";
 
-const createProductRepositoryStub = (): ProductRepositoryInterface => {
-    return {
-        create: jest.fn(),
-        update: jest.fn(),
-        find: jest.fn(),
-        findAll: jest.fn()
-    };
-};
-
 describe('Create Product Use Case - Unit Test', () => {
+    let sequelize: Sequelize;
+
+    beforeEach(async () => {
+        sequelize = new Sequelize({
+            dialect: "sqlite",
+            storage: ":memory:",
+            logging: false,
+            sync: { force: true },
+        });
+
+        await sequelize.addModels([ProductModel]);
+        await sequelize.sync();
+    });
+
+    afterEach(async () => {
+        await sequelize.close();
+    });
+
     it('should create a product', async () => {
         const input: InputCreateProductDTO = {
             name: "Arroz",
@@ -24,11 +35,18 @@ describe('Create Product Use Case - Unit Test', () => {
             price: input.price
         };
 
-        const productRepository = createProductRepositoryStub();
+        const productRepository = new ProductRepository();
         const usecase = new CreateProductUseCase(productRepository);
         const output = await usecase.execute(input);
 
         expect(output).toEqual(expectedOutput);
+
+        const createdProduct = await productRepository.find(output.id);
+
+        expect(createdProduct).toBeTruthy();
+        expect(createdProduct.id).toEqual(output.id);
+        expect(createdProduct.name).toEqual(output.name);
+        expect(createdProduct.price).toEqual(output.price);
     });
 
     it('should not create a product with an empty name', async () => {
@@ -37,7 +55,7 @@ describe('Create Product Use Case - Unit Test', () => {
             price: 10
         };
 
-        const productRepository = createProductRepositoryStub();
+        const productRepository = new ProductRepository();
         const usecase = new CreateProductUseCase(productRepository);
 
         await expect(usecase.execute(input)).rejects.toThrow("Name is required");
@@ -49,7 +67,7 @@ describe('Create Product Use Case - Unit Test', () => {
             price: -1
         };
 
-        const productRepository = createProductRepositoryStub();
+        const productRepository = new ProductRepository();
         const usecase = new CreateProductUseCase(productRepository);
 
         await expect(usecase.execute(input)).rejects.toThrow("Price must be greater than zero");
