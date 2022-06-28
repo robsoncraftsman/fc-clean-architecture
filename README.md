@@ -19,3 +19,5 @@ https://plataforma.fullcycle.com.br/
 `npm install`
 - Para executar os testes:
 `npm test`
+- Para executar o servidor WEB:
+`npm run dev`
