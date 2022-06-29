@@ -1,3 +1,4 @@
+import NotificationError from "../../../domain/@shared/notification/notification.error";
 import Customer from "../../../domain/customer/entity/customer";
 import CustomerRepositoryInterface from "../../../domain/customer/repository/customer-repository.interface";
 import Address from "../../../domain/customer/value-object/address";
@@ -57,6 +58,6 @@ describe('Create Customer Use Case - Unit Test', () => {
         const customerRepository = createCustomerRepositoryStub();
         const usecase = new CreateCustomerUseCase(customerRepository);
 
-        expect(usecase.execute(input)).rejects.toThrow("Name is required");
+        expect(usecase.execute(input)).rejects.toThrowError("customer: Name is required");
     });
 });
