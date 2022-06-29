@@ -98,4 +98,20 @@ describe('Update Product Use Case - Unit Test', () => {
 
         await expect(usecase.execute(input)).rejects.toThrowError("product: Price must be greater than zero");
     });
+
+    it('should not update a product with an empty name and a negative price', async () => {
+        const productFromDb = new Product("1", "Arroz", 10);
+        const productRepository = new ProductRepository();
+        await productRepository.create(productFromDb);
+
+        const input: InputUpdateProductDTO = {
+            id: "1",
+            name: "",
+            price: -1
+        };
+
+        const usecase = new UpdateProductUseCase(productRepository);
+
+        await expect(usecase.execute(input)).rejects.toThrowError("product: Name is required, product: Price must be greater than zero");
+    });
 });

@@ -8,9 +8,9 @@ export default class UpdateProductUseCase {
     }
 
     async execute(input: InputUpdateProductDTO): Promise<OutputUpdateProductDTO> {
-        const product = await this.productRepository.find(input.id);
-        InputUpdateProductMapper.bind(input, product);
-        await this.productRepository.update(product);
-        return OutputUpdateProductMapper.map(product);
+        const productFromDb = await this.productRepository.find(input.id);
+        const productToUpdate = InputUpdateProductMapper.merge(input, productFromDb);
+        await this.productRepository.update(productToUpdate);
+        return OutputUpdateProductMapper.map(productToUpdate);
     }
 }
