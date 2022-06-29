@@ -1,4 +1,4 @@
-import express, { request, Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import { InputCreateCustomerDTO } from '../../../usecase/customer/create/create.customer.dto';
 import CreateCustomerUseCase from '../../../usecase/customer/create/create.customer.usecase';
 import ListCustomerUseCase from '../../../usecase/customer/list/list.customer.usecase';
