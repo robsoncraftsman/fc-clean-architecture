@@ -51,4 +51,42 @@ describe('E2E test for customer', () => {
 
         expect(response.status).toBe(500);
     });
+
+    it('should list all customers', async () => {
+        const inputCreateCustomerOne = {
+            name: "Maria",
+            address: {
+                street: "Rua das Flores",
+                number: 123,
+                zip: '88.888-888',
+                city: 'Florianópolis'
+            }
+        };
+        const responseCreateCustomerOne = await request(app).post("/customer").send(inputCreateCustomerOne);
+        expect(responseCreateCustomerOne.status).toBe(200);
+
+
+        const inputCreateCustomerTwo = {
+            name: "João",
+            address: {
+                street: "Rua Buritis",
+                number: 589,
+                zip: '88.888-888',
+                city: 'Florianópolis'
+            }
+        };
+        const responseCreateCustomerTwo = await request(app).post("/customer").send(inputCreateCustomerTwo);
+        expect(responseCreateCustomerTwo.status).toBe(200);
+
+        const listCustomersResponse = await request(app).get("/customer").send();
+        expect(listCustomersResponse.status).toBe(200);
+        expect(listCustomersResponse.body.customers).toBeTruthy();
+        expect(listCustomersResponse.body.customers.length).toBe(2);
+
+        const customerOne = listCustomersResponse.body.customers[0];
+        expect(customerOne).toEqual({ id: expect.any(String), ...inputCreateCustomerOne });
+
+        const customerTwo = listCustomersResponse.body.customers[1];
+        expect(customerTwo).toEqual({ id: expect.any(String), ...inputCreateCustomerTwo });
+    });
 });
