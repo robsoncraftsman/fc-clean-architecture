@@ -64,7 +64,7 @@ describe('Update Product Use Case - Unit Test', () => {
         const productRepository = new ProductRepository();
         const usecase = new UpdateProductUseCase(productRepository);
 
-        await expect(usecase.execute(input)).rejects.toThrow("Product not found");
+        await expect(usecase.execute(input)).rejects.toThrowError("Product not found");
     });
 
     it('should not update a product with an empty name', async () => {
@@ -80,7 +80,7 @@ describe('Update Product Use Case - Unit Test', () => {
 
         const usecase = new UpdateProductUseCase(productRepository);
 
-        await expect(usecase.execute(input)).rejects.toThrow("Name is required");
+        await expect(usecase.execute(input)).rejects.toThrowError("product: Name is required");
     });
 
     it('should not update a product with a negative price', async () => {
@@ -96,6 +96,6 @@ describe('Update Product Use Case - Unit Test', () => {
 
         const usecase = new UpdateProductUseCase(productRepository);
 
-        await expect(usecase.execute(input)).rejects.toThrow("Price must be greater than zero");
+        await expect(usecase.execute(input)).rejects.toThrowError("product: Price must be greater than zero");
     });
 });

@@ -41,7 +41,7 @@ describe('E2E test for product', () => {
         const input = { name: "" };
 
         const response = await request(app).post("/product").send(input);
-        const expectedError = new ApiError("Name is required");
+        const expectedError = new ApiError("product: Name is required");
 
         expect(response.status).toBe(500);
         expect(response.body).toEqual(expectedError);
@@ -54,12 +54,24 @@ describe('E2E test for product', () => {
         };
 
         const response = await request(app).post("/product").send(input);
-        const expectedError = new ApiError("Price must be greater than zero");
+        const expectedError = new ApiError("product: Price must be greater than zero");
 
         expect(response.status).toBe(500);
         expect(response.body).toEqual(expectedError);
     });
 
+    it("should not create a product when name and price are invalid", async () => {
+        const input = {
+            name: "",
+            price: -1
+        };
+
+        const response = await request(app).post("/product").send(input);
+        const expectedError = new ApiError("product: Name is required, product: Price must be greater than zero");
+
+        expect(response.status).toBe(500);
+        expect(response.body).toEqual(expectedError);
+    });
 
     it('should list all products', async () => {
         const inputCreateProductOne = {

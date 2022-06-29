@@ -58,7 +58,7 @@ describe('Create Product Use Case - Unit Test', () => {
         const productRepository = new ProductRepository();
         const usecase = new CreateProductUseCase(productRepository);
 
-        await expect(usecase.execute(input)).rejects.toThrow("Name is required");
+        await expect(usecase.execute(input)).rejects.toThrow("product: Name is required");
     });
 
     it('should not create a product with a negative price', async () => {
@@ -70,6 +70,18 @@ describe('Create Product Use Case - Unit Test', () => {
         const productRepository = new ProductRepository();
         const usecase = new CreateProductUseCase(productRepository);
 
-        await expect(usecase.execute(input)).rejects.toThrow("Price must be greater than zero");
+        await expect(usecase.execute(input)).rejects.toThrow("product: Price must be greater than zero");
+    });
+
+    it('should not create a product when name and price are invalid ', async () => {
+        const input: InputCreateProductDTO = {
+            name: "",
+            price: -1
+        };
+
+        const productRepository = new ProductRepository();
+        const usecase = new CreateProductUseCase(productRepository);
+
+        await expect(usecase.execute(input)).rejects.toThrow("product: Name is required, product: Price must be greater than zero");
     });
 });
